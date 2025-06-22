@@ -1,6 +1,9 @@
-// mongopassword=jgUYh0afhTqzd9dC
-// asurendrakumarpatel
+
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 
 const connectDB = async () => {
     try {

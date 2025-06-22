@@ -10,11 +10,11 @@ import menuRoute from "./routes/menu.route";
 import orderRoute from "./routes/order.route";
 import path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../server/.env") });
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 const DIRNAME = path.resolve();
 
@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
-    origin: "https://food-app-yt.onrender.com",
+    origin: " http://localhost:5173",
     credentials: true
 }
 app.use(cors(corsOptions));
@@ -42,5 +42,6 @@ app.use("*",(_,res) => {
 
 app.listen(PORT, () => {
     connectDB();
+    console.log("MAILTRAP_API_TOKEN:", process.env.MAILTRAP_API_TOKEN);
     console.log(`Server listen at port ${PORT}`);
 });
