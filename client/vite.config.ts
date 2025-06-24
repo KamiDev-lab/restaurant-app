@@ -9,4 +9,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: "dist", // important: Vite default, but explicitly set
+    emptyOutDir: true,
+  },
 })

@@ -9,44 +9,38 @@ import restaurantRoute from "./routes/restaurant.route";
 import menuRoute from "./routes/menu.route";
 import orderRoute from "./routes/order.route";
 import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Load .env from server/.env
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Middlewares
+const PORT = process.env.PORT || 3000;
+
+const DIRNAME = path.resolve();
+
+// default middleware for any mern project
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json());
 app.use(cookieParser());
+const corsOptions = {
+    origin: "http://localhost:5173",
+    credentials: true
+}
+app.use(cors(corsOptions));
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
-
-// Routes
+// api
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/restaurant", restaurantRoute);
 app.use("/api/v1/menu", menuRoute);
 app.use("/api/v1/order", orderRoute);
 
-// Serve frontend
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
-app.get("*", (_, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+app.use(express.static(path.join(DIRNAME,"/client/dist")));
+app.use("*",(_,res) => {
+    res.sendFile(path.resolve(DIRNAME, "client","dist","index.html"));
 });
 
-// Start server
 app.listen(PORT, () => {
-  connectDB();
-  console.log("MAILTRAP_API_TOKEN:", process.env.MAILTRAP_API_TOKEN);
-  console.log(`🚀 Server listening on port ${PORT}`);
+    connectDB();
+    console.log(`Server listen at port ${PORT}`);
 });
